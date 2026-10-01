@@ -29,6 +29,10 @@ preregistered baseline gate, edge/cable-cost comparisons, and results are in
 MNIST/EMNIST replication. The original two-module pilot and `composition_*`
 artifacts are preserved as invalid diagnostics superseded by this protocol.
 
+The revised baseline passes specialization/cooperation gates. The 48-seed study
+falsifies the prespecified >=5-point advantage over both controls within its tested
+grid; smaller effects and other regimes remain unresolved.
+
 ## uv and PyCharm
 
 Run `uv sync --locked` from this checkout to install the project and development

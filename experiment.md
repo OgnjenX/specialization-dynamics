@@ -221,171 +221,187 @@ old command without `--stage` now runs the new baseline gate, not the invalid
 pilot. To reproduce the pilot, use its historical commit in a separate checkout.
 Numerical identity across library versions or machines is not guaranteed.
 
-## Historical invalid pilot (2026-10-01)
+## Results (2026-10-02)
 
-Everything below describes the superseded pilot and its original decision rule.
-Its original "inconclusive" statistic is retained for audit, but its design is
-invalid for the revised hypothesis; passing its learning gate did not validate it.
+**The revised experiment falsifies the prespecified >=5-point advantage over both
+controls in this tested grid.** This is a threshold-specific result for this
+symbolic task, placement, bandwidth and training regime; it does not rule out
+smaller gains, other graph parameters, or the broad biological hypothesis.
 
-# Compositional generalization experiment
+Protocol and numerical code: **`1bc6af3`**, committed before all fresh baseline and
+final runs. All 16 baseline and **2,592 final runs** completed; all failed/poor
+performances are retained. No numerical amendments, early stopping, extra seeds,
+held-out tuning, or omitted jobs. Final inference uses 48 seed means, each averaging
+three splits. The two physical copies of the 18-edge/26-cost local control are
+repeated runs, not additional independent evidence.
 
-Protocol frozen before final runs; see the protocol commit in git history. Upstream:
-Gabriel Béna and Dan F. M. Goodman, *Dynamics of specialization in neural modules
-under resource constraints*, https://doi.org/10.1038/s41467-024-55188-9;
-code baseline 520dd88183a6fcf51ae6995956829ea10c2d906c.
+The preregistered complete-graph baseline gate passed: seen task **99.980%**,
+A-selected **99.965%**, B-selected **99.995%**, source specialization **.34389**
+(95% seed CI [.31463,.37314]), own probe **96.071%**, other probe **65.121%**, and
+all-communication-cut drop **89.971 pp**. The chain baseline diagnostic reached
+96.196% overall, but A-selected accuracy was 92.415%; it was not the gate reference.
+This establishes the required specialization/cooperation coexistence in the
+reduced architecture, not replication of the full perceptual study.
 
-## Hypothesis and scope
+### Complete final panel
 
-At equal communication budget, exponentially distance-biased wiring improves
-accuracy on unseen digit combinations by at least 5 percentage points over
-uniform sparse wiring, while retaining specialization and reliance on cooperation.
-This tests one synthetic operationalization, not all sparse networks or biological
-wiring. Geometry is imposed on exchangeable hidden units, not semantic inputs.
+| Budget view | Rule | Seen (%) | Held (%) | Source specialization | All-cut drop (pp) | Cable cost | Directed edges |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| edges 14 | Strongly local | 97.640 | 61.417 | 0.852 | 51.417 | 18.000 | 14.000 |
+| edges 14 | Uniform | 99.257 | 62.338 | 0.629 | 52.338 | 22.333 | 14.000 |
+| edges 14 | Exponential | 98.141 | 62.062 | 0.759 | 52.062 | 19.667 | 14.000 |
+| edges 14 | Power law | 98.836 | 62.076 | 0.767 | 52.076 | 19.792 | 14.000 |
+| edges 18 | Strongly local | 99.985 | 66.430 | 0.730 | 56.430 | 26.000 | 18.000 |
+| edges 18 | Uniform | 99.945 | 67.993 | 0.460 | 57.993 | 33.875 | 18.000 |
+| edges 18 | Exponential | 99.979 | 65.415 | 0.663 | 55.415 | 28.792 | 18.000 |
+| edges 18 | Power law | 99.973 | 67.242 | 0.602 | 57.242 | 29.875 | 18.000 |
+| cost 22 | Strongly local | 99.992 | 66.355 | 0.785 | 56.355 | 22.000 | 16.000 |
+| cost 22 | Uniform | 99.471 | 61.049 | 0.657 | 51.049 | 22.000 | 14.167 |
+| cost 22 | Exponential | 99.871 | 64.786 | 0.765 | 54.786 | 22.000 | 15.750 |
+| cost 22 | Power law | 99.845 | 63.937 | 0.748 | 53.937 | 22.000 | 15.583 |
+| cost 26 | Strongly local | 99.985 | 66.430 | 0.730 | 56.430 | 26.000 | 18.000 |
+| cost 26 | Uniform | 99.697 | 67.154 | 0.593 | 57.154 | 26.000 | 15.583 |
+| cost 26 | Exponential | 99.785 | 64.378 | 0.681 | 54.378 | 26.000 | 17.083 |
+| cost 26 | Power law | 99.767 | 65.771 | 0.637 | 55.771 | 26.000 | 16.750 |
+| unmatched | Chain diagnostic | 97.272 | 55.214 | 0.992 | 45.214 | 10.000 | 10.000 |
+| unmatched | Disconnected | 10.000 | 10.000 | 1.000 | 0.000 | 0.000 | 0.000 |
 
-Reuse upstream Community (two RNNs summed, analog communication, two local linear
-readouts, upstream max-confidence decision) and exact parity-digits target: return
-A if A+B is odd, otherwise B. Inputs are ten-dimensional one-hot digit identities
-with independent Gaussian noise SD .05, repeated for four timesteps with fresh
-noise. No digit supervision, auxiliary loss, hard-coded composition, or joint
-readout. Analog communication is an upstream option; the notebook uses binary.
+All primary mean learning gates passed (seen 97.640–99.992%; both branch means
+also >=95%). Specialization and all-cut reliance passed in every primary condition.
+**No candidate met the 80% held-out criterion.** The all-cut and disconnected
+outputs are exactly 10%; all-cut drop therefore equals held performance minus
+10 points in this designated-output design. Individual source cuts also impair
+performance: source-A drops span 31.95–41.64 pp and source-B drops 26.61–35.14 pp
+across primary conditions. This confirms causal dependence on both routed inputs;
+it does not establish an optimal cooperative algorithm.
 
-## Fixed design
+Held-out branch performance is asymmetric despite balanced test construction:
+A-selected means 42.87–59.31%, B-selected 74.10–80.59%. Module 3 is nearer B than A,
+and placement/task asymmetries are not counterbalanced. The cause of this gap is
+unresolved; it must not be attributed to distance alone. Every split contains both
+branches and every target equally, so it is not the pilot's branch-omission bug.
 
-CPU float32, one thread, hidden size 64/module, AdamW lr .003, weight decay 1e-5,
-1,500 updates of 128 examples, no early stopping/checkpoint selection. Seeds 0–4;
-three fixed split offsets (1,3), (2,4), (5,7). Hold out all ordered pairs satisfying
-(B-A) mod 10 in the split offsets: 20 test pairs, 80 train pairs. Each digit occurs
-in both positions in both sets, and all output labels are represented. Sample
-training pairs uniformly with replacement. Evaluate 100 independent noisy draws
-per pair, reporting pair-macro accuracy. No final test evaluation during training.
-Initialization and minibatches are paired between conditions; masks use an
-independent RNG. Same optimizer, dense allocated parameters, active intra-module
-connections, input/readout masks, updates and examples in primary conditions.
+### Paired uncertainty and frozen decision
 
-Uniform: 409 unique edges per directed 64x64 inter-module block (upstream uniform
-sampling without replacement, floor(.1*64²)). Distance: exactly 409 per block,
-sampling without replacement with weights exp(-d/.2). Each module has neurons on
-a unit interval, fixed independently shuffled coordinates per seed; d includes a
-fixed inter-module gap .1: sqrt((x_i-x_j)^2+.1^2). Geometry/scale are never tuned.
-Report realized mean edge length; degree distributions are not controlled, so
-inferences concern the whole topology rule, not distance independently of degree.
-Disconnected diagnostic uses zero communication edges; it is not budget matched.
-No dense or power-law primary condition: the claim is relative to uniform sparse.
+All intervals below have simultaneous 95% family coverage across the 16 planned
+contrasts (Bonferroni, seed df=47). Nominal intervals and all 48 paired differences
+are also stored in `module_final_summary.json`.
 
-First run a reduced upstream sanity check on all 100 pairs, uniform .1 versus
-fully connected communication, same training budget and seeds, with no combination
-holdout. This is not a replication of the MNIST paper or its complete sweeps.
+| Candidate | Difference vs local (pp; simultaneous CI) | Difference vs uniform (pp; simultaneous CI) |
+| --- | ---: | ---: |
+| edges 14, Exponential | +0.645 [-3.367, +4.658] | -0.276 [-5.663, +5.111] |
+| edges 14, Power law | +0.659 [-4.042, +5.360] | -0.262 [-5.489, +4.966] |
+| edges 18, Exponential | -1.015 [-4.615, +2.585] | -2.578 [-7.173, +2.017] |
+| edges 18, Power law | +0.812 [-3.279, +4.902] | -0.751 [-5.853, +4.351] |
+| cost 22, Exponential | -1.569 [-4.185, +1.047] | +3.737 [-0.787, +8.262] |
+| cost 22, Power law | -2.418 [-5.194, +0.357] | +2.888 [-1.704, +7.480] |
+| cost 26, Exponential | -2.052 [-5.163, +1.058] | -2.776 [-7.212, +1.660] |
+| cost 26, Power law | -0.659 [-4.728, +3.411] | -1.383 [-5.120, +2.355] |
 
-## Measurements and decision rule
+For **each** of the eight distance candidates, at least one learned control has an
+upper simultaneous bound below +5 pp. Thus none can satisfy the required >=5 pp
+advantage over **both** controls under the frozen rule. Some refuting bounds are
+close to the boundary (4.902 and 4.966 pp); this does not establish zero effect or
+robust exclusion of nearby smaller thresholds.
 
-Use the final model. Report seen-pair and held-out pair accuracies. Cooperation:
-held-out accuracy loss after zeroing communication masks (restore afterward;
-post-training intervention, potentially distribution-shifting). Specialization:
-fit fixed ridge linear digit probes (ridge .01 with intercept) on detached final
-states using 20 fresh noisy draws/all 100 pairs, evaluate on independent 20 draws.
-For each module measure own-digit accuracy minus other-digit accuracy; average the
-two. Probes are diagnostic only, never feed task training. Their use of all pairs
-is disclosed and does not change the task predictor.
+Only **5/16** comparisons met the prospective nominal +/-2.5 pp precision target;
+the largest half-width was **3.478 pp**. Observed variability exceeded the assumed
+SD .08 for many contrasts. No seeds were added after inspecting results. Grid
+falsification follows the actual simultaneous upper bounds against the two-control
+criterion, not failure to obtain nominal significance. Smaller effects remain
+uncertain. For example, exponential at cost 22 gained +3.737 pp over uniform:
+nominal CI [+0.816,+6.658], simultaneous CI [-0.787,+8.262]; it lost 1.569 pp to
+local at that same cost. That comparison does not establish a corrected-family
+benefit or an advantage over the strongest matched control.
 
-Average three split results within each seed; five seed means are independent
-units. Primary uncertainty: paired mean distance-minus-uniform accuracy difference,
-two-sided 95% Student-t interval (df=4). Splits are repeated measurements, not 15
-independent replicates. Thresholds are set now, before results:
+### Wiring tradeoff
 
-- Valid learning gate: both primary conditions mean seen accuracy >= .95.
-- Support requires the gate; lower paired CI > .05; distance mean held-out >= .90;
-  distance mean specialization >= .10; distance mean cooperation drop >= .10.
-- Falsify the >=5-point advantage in this setup if the gate passes and upper CI
-  < .05 (regardless of ancillary metrics). This does not falsify all wiring rules.
-- Otherwise inconclusive; explicitly report failed learning/ancillary gates.
+![Generalization versus module cable cost](module_pareto.svg)
 
-All raw run-level measurements, exact splits, environment/configuration, and a
-machine-readable decision will be saved in small text files. No hyperparameter
-selection using held-out performance. Test repairs may change code correctness,
-but any protocol change after results requires a disclosed amendment/new study.
+Points show mean held performance and nominal 95% seed intervals; segments only
+connect the two frozen budgets. The horizontal quantity is mean realized module
+cable cost (four-channel cable cost is four times larger). This is a descriptive
+performance/cost comparison, not an uncertainty-certified frontier. The full
+empirical frontier is listed in `module_final_summary.json`; some distance points
+are on it, which is not itself evidence of statistical dominance.
 
-## Results (2026-10-01)
+At fixed edge count, exponential reduced mean cable cost relative to uniform by
+11.9% (14 edges) and 15.0% (18 edges), while its held performance differences were
+-.276 and -2.578 pp. Power-law costs were also lower. Exact-cost views demonstrate
+that cheaper mean edges alone do not establish a superior tradeoff: local at cost
+22 and uniform at cost 26 had the highest mean performance in those cells.
+All models allocate **8,362 independent stored scalars**. Fixed-edge active counts
+are 6,250/6,634; exact-cost active counts differ (cost-22 means 6,266–6,442; cost-26
+means 6,402–6,634). Capacity and degree differences therefore remain part of the
+whole-rule interpretation. Dense runtime operations are held constant; cable
+is an abstract wiring proxy, not measured compute savings or anatomical cost.
 
-Protocol: commit `51a2315`; execution code: `7cc1986`. All 55 prescribed runs
-completed (10 full-pair sanity checks, 45 held-out runs). No protocol amendments,
-extra seeds, tuned geometry, checkpoint selection, or omitted runs. Later code
-edits only format equivalent expressions; a representative distance run reproduced
-all recorded numerical values exactly after formatting.
+### Reproduction, validation, and limits
 
-| Condition | Seen pairs | Held-out pairs | Own probe | Other probe | Specialization | Communication ablation drop |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Uniform sparse | 99.996% | 39.210% | 100.000% | 100.000% | 0.00000 | 13.653 pp |
-| Exponential distance | 99.997% | 41.017% | 100.000% | 99.998% | 0.00002 | 11.947 pp |
-| Disconnected diagnostic | 64.376% | 13.653% | 100.000% | 9.703% | 0.90297 | 0.000 pp |
-
-Distance-minus-uniform held-out gain: **+1.807 percentage points**, 95% paired
-Student-t interval **[-8.732, +12.345] pp**. Seed-level differences after averaging
-splits: +6.317, -5.617, -7.333, +2.517, +13.150 pp. Learning gate passed; joint
-ancillary gate failed (held-out performance <90%; specialization <.10).
-Machine-readable preregistered decision: **inconclusive**.
-
-The hypothesis is **not supported in this setup**. The connected models fit the
-seen combinations nearly perfectly but fail the absolute generalization and
-specialization criteria. The interval is too wide to either establish or falsify
-the specific >=5-point distance advantage. Calling that advantage falsified would
-misstate the evidence. Post-training ablation supports reliance on communication,
-and the disconnected control has high input specificity but low task performance;
-none of these conditions demonstrates the desired three-way combination.
-
-Full-pair baseline accuracy was 99.998% for both .1 and 1.0 connectivity, with
-specialization 0.00000 and -0.00005 respectively; communication ablation drops
-were 42.228 and 51.322 pp. These runs establish task learnability using upstream
-machinery, **not replication of the paper's specialization findings**. The original
-MNIST/EMNIST notebook and parameter sweeps were not run. The reduced symbolic
-check removes perception and uses analog instead of notebook binary communication;
-its lack of specialization is a substantive limit on external validity.
-
-Mean inter-module edge length was .36785 (uniform) versus .21498 (distance), a
-41.6% reduction, so the geometry manipulation worked. Both use 818 edges and
-40,468 allocated parameter entries. Upstream core and communication Parameter
-objects share underlying weight storage (21,524 unique stored scalar weights,
-with separate optimizer entries); this behavior is retained identically across
-conditions. Counts of dense allocated entries are not counts of active edges.
-
-Additional limits: five seeds give low precision; the three circular-offset
-splits cover one family of compositions; geometry is arbitrary at hidden-unit
-level and intra-module recurrence remains dense. Edge counts, not summed cable
-length or degree distributions, are matched. Distance and degree-pattern effects
-cannot be separated. Probes may saturate and only assess linear decodability;
-no causal claim about specific digit-specialist modules follows. The upstream
-max-confidence decision sees both local readouts, so communication is not a
-structural necessity imposed by the readout. Ablation shifts learned dynamics;
-its drop is not a standalone proof of useful compositional cooperation. Noise
-draws are repeated observations, not additional independent seeds. These results
-do not rule out other spatial scales, budgets, tasks, or learning mechanisms.
-
-## Reproduce and verify
-
-Run from the repository root. Recorded environment: macOS arm64, Python 3.11.9,
-PyTorch 2.13.0, NumPy 2.3.4, SciPy 1.16.2, CPU float32, one thread. No CUDA or
-external datasets are required. Numerical identity across other platforms or
-library builds is not guaranteed.
+Actual final commands in the existing pinned environment (fresh-prefix equivalents
+are in the reproduction section above):
 
 ```sh
-python3 -m venv .venv
-. .venv/bin/activate
-python -m pip install -e . torch==2.13.0 numpy==2.3.4 scipy==1.16.2
-python -m unittest -v test_composition
-python -m dynspec.composition --output reproduced
-uvx ruff check --isolated dynspec/composition.py test_composition.py
-uvx ruff format --isolated --check dynspec/composition.py test_composition.py
-git diff --check
+.venv/bin/python -m dynspec.composition --stage baseline --output module_baseline --workers 4
+.venv/bin/python -m dynspec.composition --stage final --baseline module_baseline --output module_final --workers 8
 ```
 
-The fresh output prefix protects existing results. Tracked `composition_runs.csv`
-contains every run; `composition_config.json` records the execution revision,
-script hash, environment, seeds and explicit train/test pairs;
-`composition_summary.json` contains means, paired differences, uncertainty and
-decision. For exact historical source, check out `7cc1986` in a separate checkout
-before running. Subsequent formatting does not alter the experiment.
+Recorded CPU environment: Python 3.11.9, PyTorch 2.13.0, NumPy 2.3.4, SciPy 1.16.2,
+macOS arm64, one thread per model. `module_baseline_*` and `module_final_*` retain
+raw rows, graphs, splits, configuration/source hashes, gates, intervals and decisions.
+No checkpoints or external datasets are tracked. The figure is a small SVG, produced by a reporting-only helper added after the
+experiment; it does not alter training, gates or inference. Regenerate it from the
+completed summary:
 
-Validation: six integrity/decision tests passed; independent recalculation from
-all 55 CSV rows matched the summary interval and budgets; one distance run
-(seed 0, split 0) repeated with exact numerical agreement. New experiment files
-passed Ruff checks/format verification and the branch passed whitespace checks.
-No pretrained model blobs or large generated artifacts are tracked.
+```sh
+uv run --locked python -m dynspec.composition_plot reproduced_final_summary.json --output reproduced_pareto.svg
+```
+
+All 12 invariant tests, Ruff lint/format checks, and whitespace checks passed.
+Independent recalculation verified every raw graph/cable budget, branch score,
+probe-derived specialization, parameter count, condition panel, mean and all 16
+paired nominal/simultaneous intervals. All 144 seed/split pairs of the identical local control matched exactly across
+views. Baseline dense seed 2000 and final exponential
+cost-22 seed 0/split 0 reproduced **every recorded field exactly**. Retained upstream
+custom masks passed validation, state roundtrip and masked-gradient checks. The
+numerical code/tests still match the frozen commit; subsequent edits are reporting
+only. Original pilot artifacts remain byte-for-byte unchanged.
+
+Limits: reduced symbolic inputs; one six-module line and fixed sensor/output
+placement; a forced local backbone; one decay parameter per distance law and two
+budgets per view; a four-bit bottleneck and fixed six-step dynamics; active capacity
+and degree confounds in cost matching; final-state linear probes that do not prove
+nonlinear information absence; acute cuts that shift state distributions; missed
+precision targets; and threshold-sensitive refuting intervals. Normalized probe
+estimates are not clipped and can slightly exceed one from sampling around chance.
+There is no claim about a scale-free network, a general compositional algorithm,
+all module functions, or other sensory/training regimes.
+
+The scientific conclusion is negative for the prespecified joint benefit: source
+specialization and cooperation can coexist, but distance-dependent shortcuts did
+not deliver the required generalization advantage over both controls. PR #1 stays
+open for review and is not merged.
+
+## Historical invalid pilot (2026-10-01)
+
+The complete original protocol/report remains at commit `5bdc38d`; exact execution
+source is `7cc1986`, following preregistration `51a2315`. All 55 original run rows
+and their configuration/summary remain in the unchanged `composition_*` artifacts.
+The original two-module noisy-symbolic/analog/max-readout experiment used
+neuron-level geometry and held-out offsets `(1,3)`, `(2,4)`, `(5,7)`. Each holdout
+omitted one output-source branch, and neither communicating baseline specialized.
+Its original statistical verdict was "inconclusive", but the operationalization
+is **invalid for the revised module-level hypothesis**.
+
+| Pilot condition | Seen (%) | Held (%) | Specialization | All-cut drop (pp) |
+| --- | ---: | ---: | ---: | ---: |
+| Uniform | 99.996 | 39.210 | .00000 | 13.653 |
+| Neuron-distance exponential | 99.997 | 41.017 | .00002 | 11.947 |
+| Disconnected, global max readout | 64.376 | 13.653 | .90297 | .000 |
+
+The historical distance-minus-uniform difference was +1.807 pp, 95% paired CI
+[-8.732,+12.345] over five seed means. Distance edges were 41.6% shorter despite
+matched counts; there was no exact cable-cost comparison. These figures are
+preserved as diagnostics, not evidence for the present hypothesis. To reproduce
+them, use the historical source in a separate checkout, not the new baseline CLI.
+The original commits, data and authorship are retained; no history was rewritten.
