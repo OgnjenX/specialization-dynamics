@@ -1,0 +1,21 @@
+{
+  "baseline_gate": {
+    "passed": true,
+    "checks": {
+      "learning": true,
+      "both_branches": true,
+      "specialization": true,
+      "own_decoding": true,
+      "cooperation": true,
+      "seed_consistency": true
+    },
+    "means": {
+      "seen": 0.9998,
+      "seen_a": 0.9996499999999999,
+      "seen_b": 0.99995,
+      "specialization": 0.34388888213369584,
+      "cooperation_drop": 0.8997125,
+      "own_probe": 0.9607083313167095
+    }
+  }
+}
