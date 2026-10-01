@@ -20,3 +20,10 @@ You're all set !
 ## Example
 You will find a main example in the notebook modular_networks.ipynb. This notebook shows how to create and train architecture with varying parameters, and their resulting specialization levels and dynamics. It goes over all the main findings of the paper, in a straightforward fashion. 
 
+
+## Held-out digit compositions
+
+The fixed-budget uniform-versus-distance wiring experiment, preregistered decision
+rule, results, and reproduction commands are in [experiment.md](experiment.md).
+It extends the upstream task with explicitly held-out digit pairs using symbolic
+inputs; it is not a replication of the paper's full MNIST/EMNIST study.
