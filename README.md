@@ -23,21 +23,23 @@ You will find a main example in the notebook modular_networks.ipynb. This notebo
 
 ## Held-out digit compositions
 
-The fixed-budget uniform-versus-distance wiring experiment, preregistered decision
-rule, results, and reproduction commands are in [experiment.md](experiment.md).
-It extends the upstream task with explicitly held-out digit pairs using symbolic
-inputs; it is not a replication of the paper's full MNIST/EMNIST study.
+The six-module binary-communication experiment, balanced held-out splits,
+preregistered baseline gate, edge/cable-cost comparisons, and results are in
+[experiment.md](experiment.md). This is a reduced symbolic task, not a full
+MNIST/EMNIST replication. The original two-module pilot and `composition_*`
+artifacts are preserved as invalid diagnostics superseded by this protocol.
 
 ## uv and PyCharm
 
 Run `uv sync --locked` from this checkout to install the project and development
 tools into `.venv` (Python 3.11.9 is pinned). In PyCharm, use
 `.venv/bin/python` as the project interpreter. Local run configurations are
-**Composition tests** and **Composition experiment**; the experiment uses
-`--output reproduced`. Choose a fresh output prefix for each additional run.
+**Composition tests** and **Composition experiment**; the experiment defaults to
+the baseline validity stage. Choose a fresh output prefix for each additional run.
 
 ```sh
 uv run --locked python -m unittest -v test_composition
-uv run --locked python -m dynspec.composition --output reproduced
+uv run --locked python -m dynspec.composition --stage baseline --output reproduced_baseline
+uv run --locked python -m dynspec.composition --stage final --baseline reproduced_baseline --output reproduced_final
 uv run --locked ruff check --isolated dynspec/composition.py test_composition.py
 ```
