@@ -4,7 +4,6 @@ import numpy as np
 from itertools import product
 from torch.nn.utils.parametrize import register_parametrization as rpm
 from dynspec.surrogate import super_spike
-from quant.quantization import Quantization
 
 cell_types_dict = {str(t): t for t in [nn.RNN, nn.GRU, nn.RNNCell, nn.GRUCell]}
 
@@ -122,6 +121,8 @@ class Quantized_weight(nn.Module):
 
     def __init__(self, n_bits):
         super().__init__()
+        from quant.quantization import Quantization
+
         self.quant_values = np.linspace(
             -(2 ** (n_bits - 1)), 2 ** (n_bits - 1) - 1, 2**n_bits
         )
@@ -436,6 +437,17 @@ class Community(nn.Module):
 
         gru = "GRU" in self.cell_type
         rec_masks = comms_mask(self.sparsity, self.n_modules, self.hidden_size, gru=gru)
+        custom_mask = self.connections_config.get("mask")
+        if custom_mask is not None:
+            custom_mask = torch.as_tensor(custom_mask, dtype=rec_masks[0].dtype)
+            if custom_mask.shape != rec_masks[0].shape:
+                raise ValueError("Communication mask has incorrect shape")
+            if not torch.all((custom_mask == 0) | (custom_mask == 1)):
+                raise ValueError("Communication mask must be binary")
+            within = state_mask(self.n_modules, self.hidden_size, self.hidden_size, gru)
+            if torch.any(custom_mask * within):
+                raise ValueError("Communication mask must only connect different modules")
+            rec_masks[0] = custom_mask.clone()
 
         out_size = (
             self.output_size

@@ -20,3 +20,34 @@ You're all set !
 ## Example
 You will find a main example in the notebook modular_networks.ipynb. This notebook shows how to create and train architecture with varying parameters, and their resulting specialization levels and dynamics. It goes over all the main findings of the paper, in a straightforward fashion. 
 
+
+## Held-out digit compositions
+
+The six-module binary-communication experiment, balanced held-out splits,
+preregistered baseline gate, edge/cable-cost comparisons, and results are in
+[experiment.md](experiment.md). The human-facing extension is
+[compositional_generalization.ipynb](compositional_generalization.ipynb): it checks
+the tracked baseline/final artifacts and displays the topology and wiring
+comparisons without training models. Run it from the checkout root in the project
+environment. This is a reduced symbolic task, not a full MNIST/EMNIST replication.
+The invalid two-module pilot's `composition_*` artifacts are removed from the
+current tree and preserved in Git history at `5bdc38d`, superseded by this protocol.
+
+The revised baseline passes specialization/cooperation gates. The 48-seed study
+falsifies the prespecified >=5-point advantage over both controls within its tested
+grid; smaller effects and other regimes remain unresolved.
+
+## uv and PyCharm
+
+Run `uv sync --locked` from this checkout to install the project and development
+tools into `.venv` (Python 3.11.9 is pinned). In PyCharm, use
+`.venv/bin/python` as the project interpreter. Local run configurations are
+**Composition tests** and **Composition experiment**; the experiment defaults to
+the baseline validity stage. Choose a fresh output prefix for each additional run.
+
+```sh
+uv run --locked python -m unittest -v test_composition
+uv run --locked python -m dynspec.composition --stage baseline --output reproduced_baseline
+uv run --locked python -m dynspec.composition --stage final --baseline reproduced_baseline --output reproduced_final
+uv run --locked ruff check --isolated dynspec/composition.py test_composition.py
+```

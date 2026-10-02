@@ -4,14 +4,30 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dynspec"
+requires-python = ">=3.11"
 authors = [
     {name = "Gabriel Béna", email = "gabriel.bena21@imperial.ac.uk"},
 ]
 description = "Code implementation for https://arxiv.org/abs/2106.02626"
 readme = "README.md"
 
-dependencies = ["numpy", "matplotlib", "ipykernel", "ipywidgets", "tqdm", "seaborn", "pandas", "scipy"]
+dependencies = [
+    "numpy==2.3.4",
+    "matplotlib",
+    "ipykernel",
+    "ipywidgets",
+    "tqdm",
+    "seaborn",
+    "pandas",
+    "scipy==1.16.2",
+    "torch==2.13.0",
+]
 dynamic = ["version"]
 
 [tool.setuptools]
 packages = ["dynspec"]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.16.10",
+]
