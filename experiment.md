@@ -1,7 +1,8 @@
 # Module-level compositional generalization
 
 This protocol supersedes the **invalid two-module pilot** below. The original
-`composition_*` artifacts and commits `51a2315`, `7cc1986`, `5bdc38d` remain intact.
+`composition_*` artifacts are removed from the current tree and preserved in Git
+history at `5bdc38d`; commits `51a2315`, `7cc1986`, `5bdc38d` remain intact.
 Their parity-confounded holdouts, neuron-level geometry, absent communicating
 specialization, and global max readout prevent testing the present hypothesis.
 They are historical diagnostics, not confirmatory evidence. No history is rewritten.
@@ -216,7 +217,7 @@ uv run --locked python -m dynspec.composition --stage final --baseline reproduce
 git diff --check
 ```
 
-The existing historical artifacts retain their original meaning and numbers. The
+The pilot artifacts in Git history retain their original meaning and numbers. The
 old command without `--stage` now runs the new baseline gate, not the invalid
 pilot. To reproduce the pilot, use its historical commit in a separate checkout.
 Numerical identity across library versions or machines is not guaranteed.
@@ -365,7 +366,7 @@ views. Baseline dense seed 2000 and final exponential
 cost-22 seed 0/split 0 reproduced **every recorded field exactly**. Retained upstream
 custom masks passed validation, state roundtrip and masked-gradient checks. The
 numerical code/tests still match the frozen commit; subsequent edits are reporting
-only. Original pilot artifacts remain byte-for-byte unchanged.
+only. Original pilot artifacts remain byte-for-byte recoverable from `5bdc38d`.
 
 Limits: reduced symbolic inputs; one six-module line and fixed sensor/output
 placement; a forced local backbone; one decay parameter per distance law and two
@@ -386,7 +387,9 @@ open for review and is not merged.
 
 The complete original protocol/report remains at commit `5bdc38d`; exact execution
 source is `7cc1986`, following preregistration `51a2315`. All 55 original run rows
-and their configuration/summary remain in the unchanged `composition_*` artifacts.
+and their configuration/summary remain in the `composition_*` artifacts at that
+historical commit, rather than in the current tree. For example,
+`git show 5bdc38d:composition_runs.csv` reads the original raw panel.
 The original two-module noisy-symbolic/analog/max-readout experiment used
 neuron-level geometry and held-out offsets `(1,3)`, `(2,4)`, `(5,7)`. Each holdout
 omitted one output-source branch, and neither communicating baseline specialized.

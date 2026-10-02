@@ -25,9 +25,13 @@ You will find a main example in the notebook modular_networks.ipynb. This notebo
 
 The six-module binary-communication experiment, balanced held-out splits,
 preregistered baseline gate, edge/cable-cost comparisons, and results are in
-[experiment.md](experiment.md). This is a reduced symbolic task, not a full
-MNIST/EMNIST replication. The original two-module pilot and `composition_*`
-artifacts are preserved as invalid diagnostics superseded by this protocol.
+[experiment.md](experiment.md). The human-facing extension is
+[compositional_generalization.ipynb](compositional_generalization.ipynb): it checks
+the tracked baseline/final artifacts and displays the topology and wiring
+comparisons without training models. Run it from the checkout root in the project
+environment. This is a reduced symbolic task, not a full MNIST/EMNIST replication.
+The invalid two-module pilot's `composition_*` artifacts are removed from the
+current tree and preserved in Git history at `5bdc38d`, superseded by this protocol.
 
 The revised baseline passes specialization/cooperation gates. The 48-seed study
 falsifies the prespecified >=5-point advantage over both controls within its tested
